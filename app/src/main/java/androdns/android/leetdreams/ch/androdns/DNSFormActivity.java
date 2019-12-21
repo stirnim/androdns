@@ -33,11 +33,14 @@ import android.widget.TextView;
 
 
 import org.xbill.DNS.DClass;
+import org.xbill.DNS.EDNSOption;
 import org.xbill.DNS.Flags;
+import org.xbill.DNS.GenericEDNSOption;
 import org.xbill.DNS.Header;
 import org.xbill.DNS.InvalidTypeException;
 import org.xbill.DNS.Message;
 import org.xbill.DNS.Name;
+import org.xbill.DNS.OPTRecord;
 import org.xbill.DNS.RRset;
 import org.xbill.DNS.Rcode;
 import org.xbill.DNS.Record;
@@ -180,6 +183,7 @@ public class DNSFormActivity extends AppCompatActivity implements AdapterView.On
                 } //invalid class
                 setDefaultPortFromProto();
                 ((CheckBox) findViewById(R.id.cbTCP)).setChecked(session.TCP);
+                ((CheckBox) findViewById(R.id.cbPadding)).setChecked(session.Padding);
                 ((CheckBox) findViewById(R.id.cbCD)).setChecked(session.flag_CD);
                 ((CheckBox) findViewById(R.id.cbRD)).setChecked(session.flag_RD);
                 ((CheckBox) findViewById(R.id.cbDO)).setChecked(session.flag_DO);
@@ -336,6 +340,14 @@ public class DNSFormActivity extends AppCompatActivity implements AdapterView.On
                 resolver.setEDNS(0, 0, Flags.DO, null);
             }
 
+            if (session.Padding) {
+                List<EDNSOption> edns_options = new ArrayList<EDNSOption>();
+                byte[] padding_data = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                EDNSOption edns_padding = new GenericEDNSOption(12, padding_data);
+                edns_options.add(edns_padding);
+                resolver.setEDNS(0, 0, Flags.DO, edns_options);
+            }
+
             resolver.setTCP(session.TCP);
 
             int query_class = DClass.IN;
@@ -461,6 +473,7 @@ public class DNSFormActivity extends AppCompatActivity implements AdapterView.On
         screenSession.qclass = (((Spinner) findViewById(R.id.spinnerCLASS))).getSelectedItem().toString();
         screenSession.server = gettxtResolverContent().trim();
         screenSession.TCP = ((CheckBox) findViewById(R.id.cbTCP)).isChecked();
+        screenSession.Padding = ((CheckBox) findViewById(R.id.cbPadding)).isChecked();
         screenSession.protocol = (((Spinner) findViewById(R.id.spinnerProto))).getSelectedItem().toString();
         try {
             screenSession.port = gettxtPortContent();

@@ -244,6 +244,7 @@ public class SimpleDoTResolver implements Resolver {
         query.addRecord(queryOPT, Section.ADDITIONAL);
     }
 
+
     private int
     maxUDPSize(Message query) {
         OPTRecord opt = query.getOPT();

@@ -192,6 +192,12 @@
                 android:layout_height="wrap_content"
                 android:text="TCP" />
 
+            <CheckBox
+                android:id="@+id/cbPadding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pad" />
+
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"

@@ -20,6 +20,7 @@ public class Session implements Serializable {
     public boolean flag_CD;
     public boolean flag_DO;
     public boolean TCP;
+    public boolean Padding;
 
     public long created;
     public long runtimestamp;
@@ -53,6 +54,7 @@ public class Session implements Serializable {
                 && other.flag_CD == this.flag_CD
                 && other.flag_DO == this.flag_DO
                 && other.TCP == this.TCP
+                && other.Padding == this.Padding
                 && other.port == this.port
         );
     }
@@ -72,6 +74,7 @@ public class Session implements Serializable {
         this.flag_CD=false;
         this.flag_DO=false;
         this.TCP = false;
+        this.Padding = false;
         this.port = 0;
     }
 
@@ -92,6 +95,7 @@ public class Session implements Serializable {
         writer.name("flag_cd").value(flag_CD);
         writer.name("flag_do").value(flag_DO);
         writer.name("tcp").value(TCP);
+        writer.name("padding").value(Padding);
         writer.name("port").value(port);
         writer.endObject();
     }
@@ -106,6 +110,7 @@ public class Session implements Serializable {
         flag_CD = json.getBoolean("flag_cd");
         flag_DO = json.getBoolean("flag_do");
         TCP = json.getBoolean("tcp");
+        Padding = json.getBoolean("padding");
         try {
             port = json.getInt("port");
         } catch(JSONException e){
